@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Register - CloudVault</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - CloudVault</title>
     <style>
         * {
             margin: 0;
@@ -10,346 +12,198 @@
         }
 
         body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%);
             min-height: 100vh;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #B2EBF2 0%, #80DEEA 100%);
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Cloud shapes */
-        body::before {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 90px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 150px;
-            top: 20%;
-            left: -50px;
-            animation: drift 15s infinite ease-in-out;
-        }
-
-        body::after {
-            content: '';
-            position: absolute;
-            width: 250px;
-            height: 75px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 150px;
-            bottom: 20%;
-            right: -40px;
-            animation: drift-reverse 12s infinite ease-in-out;
-        }
-
-        @keyframes drift {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(60px, -20px); }
-        }
-
-        @keyframes drift-reverse {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(-60px, 20px); }
-        }
-
-        .container {
-            display: flex;
-            background: white;
-            border-radius: 30px;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-            max-width: 900px;
-            width: 100%;
-            animation: zoomIn 0.6s ease-out;
-            position: relative;
-            z-index: 1;
-        }
-
-        @keyframes zoomIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .left-panel {
-            flex: 1;
-            padding: 60px 50px;
-            display: flex;
-            flex-direction: column;
             justify-content: center;
+            padding: 24px;
         }
 
-        .form-header {
-            margin-bottom: 40px;
-        }
-
-        .form-header h2 {
-            color: #00838F;
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 10px;
-        }
-
-        .form-header p {
-            color: #78909C;
-            font-size: 15px;
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        .input-group label {
-            display: block;
-            color: #37474F;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        input {
+        .auth-container {
             width: 100%;
-            padding: 16px 20px;
-            border-radius: 14px;
-            border: 2px solid #E0F7FA;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background: #F5F5F5;
-            color: #263238;
+            max-width: 460px;
         }
 
-        input:focus {
-            outline: none;
-            border-color: #00ACC1;
+        .auth-card {
             background: white;
-            box-shadow: 0 0 0 4px rgba(0, 172, 193, 0.1);
+            border-radius: 12px;
+            padding: 48px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
-        button {
-            width: 100%;
-            padding: 18px;
-            border-radius: 14px;
-            border: none;
-            background: linear-gradient(135deg, #00ACC1 0%, #00838F 100%);
-            color: white;
-            font-size: 17px;
+        .logo {
+            font-size: 28px;
             font-weight: 700;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 15px 35px rgba(0, 172, 193, 0.35);
-            letter-spacing: 0.5px;
-        }
-
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 45px rgba(0, 172, 193, 0.45);
-        }
-
-        button:active {
-            transform: translateY(-1px);
-        }
-
-        #msg {
-            margin-top: 15px;
-            padding: 14px;
-            border-radius: 10px;
+            color: #1E3A8A;
             text-align: center;
-            font-size: 14px;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .auth-title {
+            font-size: 24px;
             font-weight: 600;
+            color: #0F172A;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #0F172A;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 15px;
+            color: #0F172A;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2563EB;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #2563EB;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 8px;
+        }
+
+        .btn-primary:hover {
+            background: #1D4ED8;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            color: #64748B;
+        }
+
+        .auth-link {
+            color: #2563EB;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-link:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: #FEE2E2;
+            color: #991B1B;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
             display: none;
         }
 
-        #msg.error {
-            color: #C62828;
-            background: #FFEBEE;
-            border-left: 4px solid #F44336;
-            display: block;
+        .success-message {
+            background: #D1FAE5;
+            color: #065F46;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
         }
 
-        #msg.success {
-            color: #2E7D32;
-            background: #E8F5E9;
-            border-left: 4px solid #4CAF50;
-            display: block;
-        }
-
-        .footer-links {
+        .home-link {
             text-align: center;
-            margin-top: 25px;
+            margin-bottom: 24px;
         }
 
-        .footer-links a {
-            color: #00ACC1;
+        .home-link a {
+            color: white;
             text-decoration: none;
             font-size: 14px;
-            font-weight: 600;
-            transition: color 0.3s ease;
+            font-weight: 500;
+            opacity: 0.9;
+            transition: opacity 0.2s ease;
         }
 
-        .footer-links a:hover {
-            color: #00838F;
+        .home-link a:hover {
+            opacity: 1;
         }
 
-        .right-panel {
-            flex: 1;
-            background: linear-gradient(135deg, #00ACC1 0%, #00838F 100%);
-            padding: 60px 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            position: relative;
-        }
-
-        .right-panel::before {
-            content: '';
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            top: -50px;
-            left: -50px;
-        }
-
-        .cloud-icon {
-            font-size: 120px;
-            margin-bottom: 30px;
-            animation: float-icon 4s ease-in-out infinite;
-            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2));
-        }
-
-        @keyframes float-icon {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .right-panel h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-            font-weight: 800;
-        }
-
-        .right-panel p {
-            text-align: center;
-            opacity: 0.95;
-            line-height: 1.6;
-            font-size: 16px;
-        }
-
-        .benefits {
-            margin-top: 30px;
-            text-align: left;
-        }
-
-        .benefit {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-            font-size: 15px;
-        }
-
-        .benefit::before {
-            content: '✓';
-            background: rgba(255, 255, 255, 0.2);
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column-reverse;
-            }
-            .left-panel, .right-panel {
-                padding: 40px 30px;
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 32px 24px;
             }
         }
     </style>
 </head>
-
 <body>
-<div class="container">
-    <div class="left-panel">
-        <div class="form-header">
-            <h2>Create Account</h2>
-            <p>Join thousands of users who trust CloudVault</p>
+    <div class="auth-container">
+        <div class="home-link">
+            <a href="/">← Back to Home</a>
         </div>
-
-        <div class="input-group">
-            <label>Email Address</label>
-            <input id="email" type="email" placeholder="your@email.com">
-        </div>
-
-        <div class="input-group">
-            <label>Password</label>
-            <input id="password" type="password" placeholder="Create a strong password">
-        </div>
-
-        <button onclick="register()">Create My Account</button>
-
-        <p id="msg"></p>
-
-        <div class="footer-links">
-            <a href="/">← Back to home</a>
-            <span style="margin: 0 10px; color: #CFD8DC;">|</span>
-            <a href="/login-page">Already have an account?</a>
-        </div>
-    </div>
-
-    <div class="right-panel">
-        <div class="cloud-icon">✨</div>
-        <h2>Join CloudVault</h2>
-        <p>Experience secure cloud storage with enterprise-grade security</p>
         
-        <div class="benefits">
-            <div class="benefit">Upload files securely to the cloud</div>
-            <div class="benefit">256-bit AES encryption</div>
-            <div class="benefit">Secure expiring links</div>
-            <div class="benefit">Access from anywhere</div>
+        <div class="auth-card">
+            <div class="logo">CloudVault</div>
+            <h2 class="auth-title">Create your account</h2>
+            
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+            
+            <form id="registerForm" onsubmit="event.preventDefault(); register();">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        class="form-input" 
+                        placeholder="you@company.com"
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        class="form-input" 
+                        placeholder="Create a strong password"
+                        required
+                    >
+                </div>
+                
+                <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+            
+            <div class="auth-footer">
+                Already have an account? <a href="/login-page" class="auth-link">Sign in</a>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-function register() {
-    fetch("/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            email: document.getElementById("email").value,
-            password: document.getElementById("password").value
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.message) {
-            alert("Registered successfully! Redirecting to login...");
-            window.location.href = "/login-page";
-        } else {
-            const msg = document.getElementById("msg");
-            msg.innerText = data.error || "Registration failed";
-            msg.className = "error";
-        }
-    });
-}
-</script>
+    <script src="/static/app.js"></script>
 </body>
 </html>

@@ -39,7 +39,8 @@ function register() {
 
 // ================= UPLOAD =================
 function uploadFile() {
-    const file = document.getElementById("file").files[0];
+    const fileInput = document.getElementById("fileInput");
+    const file = fileInput.files[0];
     if (!file) return alert("Select a file");
 
     const form = new FormData();
@@ -54,15 +55,8 @@ function uploadFile() {
     })
     .then(res => res.json())
     .then(data => {
-        document.getElementById("uploadMsg").innerText = data.message || "Uploaded";
-        document.getElementById("file").value = "";
-        
-        // Clear selected file display
-        const selectedFileEl = document.getElementById("selectedFile");
-        if (selectedFileEl) {
-            selectedFileEl.textContent = "";
-        }
-        
+        alert(data.message || "File uploaded successfully");
+        fileInput.value = "";
         loadFiles();
     });
 }
@@ -77,37 +71,54 @@ function loadFiles() {
     })
     .then(res => res.json())
     .then(files => {
-        const list = document.getElementById("fileList");
+        const list = document.getElementById("filesList");
+        if (!list) return;
+        
         list.innerHTML = "";
 
         // Update stats
-        const fileCountEl = document.getElementById("fileCount");
-        const totalSizeEl = document.getElementById("totalSize");
+        const totalFilesEl = document.getElementById("totalFiles");
+        const storageUsedEl = document.getElementById("storageUsed");
         
-        if (fileCountEl && totalSizeEl) {
-            fileCountEl.textContent = files.length;
+        if (totalFilesEl) {
+            totalFilesEl.textContent = files.length;
+        }
+        
+        if (storageUsedEl) {
             const totalKB = files.reduce((sum, f) => sum + parseFloat(f.size_kb), 0);
-            totalSizeEl.textContent = totalKB.toFixed(2) + " KB";
+            storageUsedEl.textContent = (totalKB / 1024).toFixed(2) + " MB";
         }
 
         if (files.length === 0) {
-            list.innerHTML = '<li class="empty-state"><p>No files uploaded yet</p></li>';
+            list.innerHTML = `
+                <tr>
+                    <td colspan="3">
+                        <div class="empty-state">
+                            <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                <polyline points="13 2 13 9 20 9"></polyline>
+                            </svg>
+                            <div class="empty-text">No files uploaded yet</div>
+                        </div>
+                    </td>
+                </tr>
+            `;
             return;
         }
 
         files.forEach(f => {
             list.innerHTML += `
-                <li>
-                    <span class="file-info">
-                        <strong>${f.filename}</strong>
-                        <span style="color: #6b7280;">(${f.size_kb} KB)</span>
-                    </span>
-                    <span class="file-actions">
-                        <button onclick="viewFile('${f.filename}')">View</button>
-                        <button onclick="downloadFile('${f.filename}')">Download</button>
-                        <button class="delete" onclick="deleteFile('${f.filename}')">Delete</button>
-                    </span>
-                </li>
+                <tr>
+                    <td class="file-name">${f.filename}</td>
+                    <td class="file-size">${f.size_kb} KB</td>
+                    <td>
+                        <div class="file-actions">
+                            <button class="btn-action" onclick="viewFile('${f.filename}')">View</button>
+                            <button class="btn-action" onclick="downloadFile('${f.filename}')">Download</button>
+                            <button class="btn-action delete" onclick="deleteFile('${f.filename}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>
             `;
         });
     });
@@ -161,7 +172,7 @@ function logout() {
 
 // ================= AUTO LOAD =================
 window.onload = function () {
-    if (document.getElementById("fileList")) {
+    if (document.getElementById("filesList")) {
         loadFiles();
     }
 };
