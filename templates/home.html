@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CloudVault - Secure Cloud Storage</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 50%, #90CAF9 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Cloud Animation Background */
+        .clouds {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 100px;
+            animation: float-clouds 30s infinite linear;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 100px;
+        }
+
+        .cloud1 {
+            width: 180px;
+            height: 60px;
+            top: 10%;
+            left: -200px;
+        }
+
+        .cloud1::before {
+            width: 80px;
+            height: 80px;
+            top: -40px;
+            left: 30px;
+        }
+
+        .cloud1::after {
+            width: 100px;
+            height: 70px;
+            top: -30px;
+            right: 30px;
+        }
+
+        .cloud2 {
+            width: 220px;
+            height: 70px;
+            top: 30%;
+            left: -250px;
+            animation-delay: -10s;
+            animation-duration: 40s;
+        }
+
+        .cloud2::before {
+            width: 90px;
+            height: 90px;
+            top: -45px;
+            left: 40px;
+        }
+
+        .cloud2::after {
+            width: 110px;
+            height: 80px;
+            top: -35px;
+            right: 40px;
+        }
+
+        .cloud3 {
+            width: 160px;
+            height: 50px;
+            top: 60%;
+            left: -180px;
+            animation-delay: -20s;
+            animation-duration: 35s;
+        }
+
+        .cloud3::before {
+            width: 70px;
+            height: 70px;
+            top: -35px;
+            left: 25px;
+        }
+
+        .cloud3::after {
+            width: 90px;
+            height: 60px;
+            top: -25px;
+            right: 25px;
+        }
+
+        @keyframes float-clouds {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(100vw + 300px)); }
+        }
+
+        .card {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 70px 80px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15),
+                        0 0 0 1px rgba(255, 255, 255, 0.5);
+            animation: slideUp 0.8s ease-out;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .logo-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .icon {
+            font-size: 100px;
+            display: inline-block;
+            animation: bounce 3s ease-in-out infinite;
+            filter: drop-shadow(0 10px 20px rgba(33, 150, 243, 0.3));
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #1976D2, #2196F3, #03A9F4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .tagline {
+            font-size: 18px;
+            color: #546E7A;
+            margin-bottom: 45px;
+            font-weight: 500;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #37474F;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .feature-icon {
+            font-size: 20px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 18px 45px;
+            border-radius: 16px;
+            border: none;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            box-shadow: 0 15px 35px rgba(33, 150, 243, 0.4);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 45px rgba(33, 150, 243, 0.5);
+        }
+
+        .btn-register {
+            background: white;
+            color: #2196F3;
+            border: 3px solid #2196F3;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-register:hover {
+            transform: translateY(-4px);
+            background: #2196F3;
+            color: white;
+            box-shadow: 0 20px 45px rgba(33, 150, 243, 0.3);
+        }
+
+        button:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        .trust-badge {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #78909C;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .trust-badge::before {
+            content: '🔒';
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="clouds">
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+        <div class="cloud cloud3"></div>
+    </div>
+
+    <div class="card">
+        <div class="logo-container">
+            <div class="icon">☁️</div>
+        </div>
+        <h1>CloudVault</h1>
+        <p class="tagline">Secure cloud storage with military-grade encryption</p>
+
+        <div class="features">
+            <div class="feature">
+                <span class="feature-icon">⚡</span>
+                <span>Lightning Fast</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🔐</span>
+                <span>End-to-End Encrypted</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">⏱️</span>
+                <span>Secure Expiring Links</span>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-login" onclick="location.href='/login-page'">Login</button>
+            <button class="btn-register" onclick="location.href='/register-page'">Create Account</button>
+        </div>
+
+        <div class="trust-badge">
+            Your data is protected with 256-bit AES encryption
+        </div>
+    </div>
+</body>
+</html>
