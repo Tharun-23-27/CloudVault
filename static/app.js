@@ -1,3 +1,75 @@
+// ================= NOTIFICATION SYSTEM =================
+function showNotification(title, message, type = 'success') {
+    const container = document.getElementById('notificationContainer');
+    if (!container) return;
+    
+    // Remove existing notification if any
+    const existing = container.querySelector('.notification');
+    if (existing) {
+        existing.remove();
+    }
+
+    // Add active class to container
+    container.classList.add('active');
+
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    
+    const iconSvg = type === 'success' 
+        ? '<svg class="notification-icon success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>'
+        : '<svg class="notification-icon error" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+    
+    notification.innerHTML = `
+        ${iconSvg}
+        <div class="notification-content">
+            <div class="notification-title">${title}</div>
+            <div class="notification-message">${message}</div>
+        </div>
+        <svg class="notification-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+    `;
+    
+    container.appendChild(notification);
+    
+    // Close button handler
+    notification.querySelector('.notification-close').addEventListener('click', () => {
+        notification.classList.add('hide');
+        setTimeout(() => {
+            notification.remove();
+            container.classList.remove('active');
+        }, 400);
+    });
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.classList.add('hide');
+            setTimeout(() => {
+                notification.remove();
+                container.classList.remove('active');
+            }, 400);
+        }
+    }, 5000);
+}
+
+// ================= FILE SIZE CONVERTER =================
+function formatFileSize(sizeKB) {
+    const size = parseFloat(sizeKB);
+    
+    if (size < 1) {
+        return (size * 1024).toFixed(2) + ' B';
+    } else if (size < 1024) {
+        return size.toFixed(2) + ' KB';
+    } else if (size < 1024 * 1024) {
+        return (size / 1024).toFixed(2) + ' MB';
+    } else {
+        return (size / (1024 * 1024)).toFixed(2) + ' GB';
+    }
+}
+
 // ================= LOGIN =================
 function login() {
     fetch("/login", {
@@ -41,7 +113,10 @@ function register() {
 function uploadFile() {
     const fileInput = document.getElementById("fileInput");
     const file = fileInput.files[0];
-    if (!file) return alert("Select a file");
+    if (!file) {
+        showNotification('No File Selected', 'Please select a file to upload', 'error');
+        return;
+    }
 
     const form = new FormData();
     form.append("file", file);
@@ -55,9 +130,12 @@ function uploadFile() {
     })
     .then(res => res.json())
     .then(data => {
-        alert(data.message || "File uploaded successfully");
+        showNotification('Upload Successful', data.message || 'Your file has been uploaded successfully', 'success');
         fileInput.value = "";
         loadFiles();
+    })
+    .catch(error => {
+        showNotification('Upload Failed', 'There was an error uploading your file', 'error');
     });
 }
 
@@ -110,7 +188,7 @@ function loadFiles() {
             list.innerHTML += `
                 <tr>
                     <td class="file-name">${f.filename}</td>
-                    <td class="file-size">${f.size_kb} KB</td>
+                    <td class="file-size">${formatFileSize(f.size_kb)}</td>
                     <td>
                         <div class="file-actions">
                             <button class="btn-action" onclick="viewFile('${f.filename}')">View</button>
@@ -151,7 +229,7 @@ function downloadFile(name) {
 
 // ================= DELETE =================
 function deleteFile(name) {
-    if (!confirm("Delete file?")) return;
+    if (!confirm("Are you sure you want to delete this file?")) return;
 
     fetch(`/delete/${encodeURIComponent(name)}`, {
         method: "DELETE",
@@ -159,7 +237,14 @@ function deleteFile(name) {
             "Authorization": "Bearer " + localStorage.getItem("token")
         }
     })
-    .then(() => loadFiles());
+    .then(res => res.json())
+    .then(data => {
+        showNotification('File Deleted', data.message || 'Your file has been deleted successfully', 'success');
+        loadFiles();
+    })
+    .catch(error => {
+        showNotification('Delete Failed', 'There was an error deleting your file', 'error');
+    });
 }
 
 

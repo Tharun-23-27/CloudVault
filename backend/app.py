@@ -5,6 +5,7 @@ from flask_jwt_extended import (
 )
 from datetime import timedelta
 import sqlite3
+import os
 
 from database import create_users_table
 from s3_utils import (
@@ -17,7 +18,7 @@ from s3_utils import (
 app = Flask(__name__, template_folder="../templates", static_folder="../static")
 
 # ================= CONFIG =================
-app.config["JWT_SECRET_KEY"] = "cloudvault-secret-key-1234567890"
+app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET") or "local-dev-secret"
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=30)
 jwt = JWTManager(app)
 
@@ -129,4 +130,4 @@ def delete(filename):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)

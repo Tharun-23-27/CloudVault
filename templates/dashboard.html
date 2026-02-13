@@ -199,9 +199,24 @@
         .files-section {
             background: white;
             border: 1px solid #E2E8F0;
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 32px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                        0 2px 4px -1px rgba(0, 0, 0, 0.06),
+                        0 10px 15px -3px rgba(30, 58, 138, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .files-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #1E3A8A, #2563EB, #3B82F6, #2563EB, #1E3A8A);
+            background-size: 200% 100%;
         }
 
         .files-header {
@@ -222,17 +237,17 @@
 
         .files-table th {
             text-align: left;
-            padding: 12px 16px;
+            padding: 16px 20px;
             font-size: 13px;
-            font-weight: 600;
-            color: #64748B;
+            font-weight: 700;
+            color: #475569;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 1px solid #E2E8F0;
+            letter-spacing: 0.8px;
+            border-bottom: 2px solid #E2E8F0;
         }
 
         .files-table td {
-            padding: 16px;
+            padding: 16px 20px;
             border-bottom: 1px solid #F1F5F9;
             font-size: 15px;
             color: #0F172A;
@@ -310,6 +325,115 @@
             color: #64748B;
         }
 
+        /* Notification Container */
+        .notification-container {
+            margin: 0 auto 24px;
+            max-width: 1400px;
+            display: flex;
+            justify-content: center;
+            min-height: 0;
+            transition: min-height 0.3s ease;
+        }
+
+        .notification-container.active {
+            min-height: 80px;
+        }
+
+        /* Notification */
+        .notification {
+            background: white;
+            border: 2px solid #10B981;
+            border-radius: 12px;
+            padding: 16px 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(16, 185, 129, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            z-index: 100;
+            width: 100%;
+            max-width: 600px;
+            animation: slideInDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .notification.success {
+            border-left-color: #10B981;
+        }
+
+        .notification.error {
+            border-color: #EF4444;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(239, 68, 68, 0.15);
+        }
+
+        .notification.hide {
+            animation: slideOutUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideOutUp {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+        }
+
+        .notification-icon {
+            width: 28px;
+            height: 28px;
+            flex-shrink: 0;
+        }
+
+        .notification-icon.success {
+            color: #10B981;
+        }
+
+        .notification-icon.error {
+            color: #EF4444;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0F172A;
+            margin-bottom: 4px;
+        }
+
+        .notification-message {
+            font-size: 14px;
+            color: #64748B;
+            line-height: 1.5;
+        }
+
+        .notification-close {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            color: #94A3B8;
+            flex-shrink: 0;
+            transition: color 0.2s ease;
+        }
+
+        .notification-close:hover {
+            color: #0F172A;
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .dashboard-container {
@@ -383,7 +507,7 @@
                         <line x1="12" y1="3" x2="12" y2="15"></line>
                     </svg>
                     <div class="upload-text">Drop files here or click to browse</div>
-                    <div class="upload-hint">Support for any file type</div>
+                    <div class="upload-hint">Supports  any File type</div>
                 </label>
                 <input type="file" id="fileInput" class="upload-input" onchange="uploadFile()">
                 <button class="btn-upload" onclick="document.getElementById('fileInput').click()">
@@ -391,6 +515,9 @@
                 </button>
             </div>
         </div>
+
+        <!-- Notification Container -->
+        <div id="notificationContainer" class="notification-container"></div>
 
         <!-- Files List -->
         <div class="files-section">
@@ -437,7 +564,7 @@
 
         function logout() {
             localStorage.removeItem('token');
-            window.location.href = '/login-page';
+            window.location.href = '/';
         }
     </script>
 </body>
